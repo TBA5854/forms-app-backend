@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import router from "./src/routes/authRoute";
+import authRouter from "./src/routes/authRoute";
+import formRouter from "./src/routes/formRoutes";
 import { connectDB } from "./src/helpers/dbController";
 import { authverify } from "./src/middleware/authMiddleware";
 import { config } from "dotenv";
@@ -9,7 +10,8 @@ const app: Express = express();
 config();
 app.use(express.json());
 app.use(cookieParser());
-app.use(router);
+app.use(authRouter);
+app.use(formRouter);
 connectDB();
 
 const port = 3000;

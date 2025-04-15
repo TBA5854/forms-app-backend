@@ -37,3 +37,37 @@ model GoogleAuth {
   userId       String  @unique
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+enum FormFieldType {
+  TEXT
+  NUMBER
+  DATE
+  TIME
+}
+
+model Form {
+  id          String        @id @default(uuid())
+  name        String
+  description String?
+
+  fields      FormField[]
+  formResponses FormResponse[]
+}
+
+model FormField {
+  id          String         @id @default(uuid())
+  name        String
+  type        FormFieldType
+  required    Boolean        @default(false)
+  formId      String
+  form        Form           @relation(fields: [formId], references: [id], onDelete: Cascade)
+}
+
+model FormResponse {
+  id        String      @id @default(uuid())
+  formId    String
+  form      Form        @relation(fields: [formId], references: [id], onDelete: Cascade)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  responses Json
+}
